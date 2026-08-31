@@ -790,3 +790,138 @@ window.onload=function(){
 
 </body>
 </html>
+<!-- نوار سرمه‌ای با دایره‌های دکمه‌ای -->
+<nav class="navy-bar">
+    <button class="circle-btn" onclick="showCharacter('woman')">
+        <img src="images/braces_woman.png" alt="Woman">
+    </button>
+    <button class="circle-btn" onclick="showCharacter('boy')">
+        <img src="images/braces_boy.png" alt="Boy">
+    </button>
+    <button class="circle-btn" onclick="showCharacter('girl')">
+        <img src="images/braces_girl.png" alt="Girl">
+    </button>
+    <button class="circle-btn" onclick="showCharacter('man')">
+        <img src="images/braces_man.png" alt="Man">
+    </button>
+</nav>
+
+<!-- بخش نمایش کاراکتر انتخاب شده، متن و صوت -->
+<div id="display-area" class="display-card">
+    <img id="char-image" src="" alt="Selected Character" style="display:none; width: 250px;">
+    <p id="char-text">Please click on one of the characters above to start!</p>
+    <button id="speak-btn" onclick="speakText()" style="display:none;">🔊 Listen & Watch</button>
+</div>
+// اطلاعات مربوط به هر کاراکتر و متن‌های انگلیسی آن‌ها
+const charactersData = {
+    woman: {
+        img: "images/braces_woman.png",
+        text: "Hello! As an adult with ceramic braces, brushing twice a day and using floss threaders is essential to keep your teeth sparkling and healthy!"
+    },
+    boy: {
+        img: "images/braces_boy.png",
+        text: "Hi there! Cleaning around my metal braces with an interdental brush helps prevent plaque buildup while I brush my teeth!"
+    },
+    girl: {
+        img: "images/braces_girl.png",
+        text: "Hello! Brushing gently in circular motions around every single orthodontic bracket keeps my smile bright and clean!"
+    },
+    man: {
+        img: "images/braces_man.png",
+        text: "Welcome! Regular brushing and mouthwash use protect your teeth and braces during your orthodontic treatment journey."
+    }
+};
+
+let currentText = "";
+
+function showCharacter(type) {
+    const data = charactersData[type];
+    if (!data) return;
+
+    // نمایش تصویر کاراکتر
+    const imgElement = document.getElementById("char-image");
+    imgElement.src = data.img;
+    imgElement.style.display = "block";
+
+    // نمایش متن انگلیسی
+    const textElement = document.getElementById("char-text");
+    textElement.innerText = data.text;
+    currentText = data.text;
+
+    // نمایش دکمه صوت
+    document.getElementById("speak-btn").style.display = "inline-block";
+    
+    // خواندن خودکار صوت (اختیاری)
+    speakText();
+}
+
+// تابع خواندن متن انگلیسی با صدای مرورگر
+function speakText() {
+    if (!currentText) return;
+    window.speechSynthesis.cancel(); // متوقف کردن صوت قبلی اگر در حال پخش بود
+    const utterance = new SpeechSynthesisUtterance(currentText);
+    utterance.lang = 'en-US'; // تنظیم زبان به انگلیسی
+    utterance.rate = 0.9; // سرعت ملایم و مناسب
+    window.speechSynthesis.speak(utterance);
+}
+/* استایل نوار سرمه‌ای */
+.navy-bar {
+    background-color: #001f3f;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* دکمه‌های دایره‌ای روی نوار */
+.circle-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    overflow: hidden;
+    cursor: pointer;
+    background: white;
+    padding: 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.circle-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.circle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* استایل بخش نمایش متن و تصویر کاراکتر */
+.display-card {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+#char-text {
+    font-size: 18px;
+    color: #333;
+    max-width: 600px;
+    margin: 15px auto;
+}
+
+#speak-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#speak-btn:hover {
+    background-color: #0056b3;
+}
